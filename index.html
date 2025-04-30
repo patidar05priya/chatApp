@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Tofu Talks 🐾</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 20px;
+      max-width: 600px;
+      margin: auto;
+      background: #f0f4f8;
+    }
+    h1 {
+      text-align: center;
+      color: #222;
+    }
+    #chat {
+      background: #fff;
+      border-radius: 8px;
+      padding: 10px;
+      height: 300px;
+      overflow-y: scroll;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      margin-bottom: 10px;
+    }
+    .msg {
+      margin: 5px 0;
+    }
+    input[type="text"] {
+      width: 80%;
+      padding: 10px;
+      font-size: 1rem;
+    }
+    button {
+      padding: 10px;
+      font-size: 1rem;
+      background: #2563eb;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #1d4ed8;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Tofu Talks 🐾</h1>
+
+  <div id="chat"></div>
+
+  <input type="text" id="messageInput" placeholder="Type your message..." />
+  <button onclick="sendMessage()">Send</button>
+
+  <script>
+    const chat = document.getElementById("chat");
+    const input = document.getElementById("messageInput");
+    const ws = new WebSocket("ws://" + location.host + "/ws");
+
+    ws.onmessage = function(event) {
+      const msg = document.createElement("div");
+      msg.className = "msg";
+      msg.textContent = event.data;
+      chat.appendChild(msg);
+      chat.scrollTop = chat.scrollHeight;
+    };
+
+    function sendMessage() {
+      if (input.value) {
+        ws.send(input.value);
+        input.value = "";
+      }
+    }
+  </script>
+
+</body>
+</html>

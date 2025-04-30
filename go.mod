@@ -1,4 +1,4 @@
-module github.com/patidar05priya/chatApp
+module chatApp
 
 go 1.23.0
 
